@@ -65,7 +65,8 @@ abstract class Mobilpay_Payment_Request_Abstract
 	public $orderId		= null;
 	public $timestamp	= null;
 	public $type		= self::PAYMENT_TYPE_SMS;
-	
+
+	/** @var Mobilpay_Payment_Request_Notify|null */
 	public $objPmNotify	= null;
 	
 	/**
