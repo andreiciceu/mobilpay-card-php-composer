@@ -30,7 +30,7 @@ class Mobilpay_Payment_Invoice
 	protected $items			= array();
 	protected $exchangeRates	= array();
 
-	public function __construct(DOMNode $elem = null)
+	public function __construct(\DOMNode $elem = null)
 	{
 		if($elem != null)
 		{
@@ -38,7 +38,7 @@ class Mobilpay_Payment_Invoice
 		}
 	}
 
-	protected function loadFromXml(DOMNode $elem)
+	protected function loadFromXml(\DOMNode $elem)
 	{
 		$attr = $elem->attributes->getNamedItem('currency');
 		if($attr == null)

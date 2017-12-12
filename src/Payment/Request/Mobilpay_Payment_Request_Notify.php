@@ -90,7 +90,7 @@ class Mobilpay_Payment_Request_Notify {
     /**
      *
      * Populate the class from the request xml
-     * @param DOMNode $elem
+     * @param \DOMNode $elem
      * @return Mobilpay_Payment_Reuquest_Notify
      * @throws Exception On missing xml attributes
      */
