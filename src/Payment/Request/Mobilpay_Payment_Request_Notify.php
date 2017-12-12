@@ -94,19 +94,19 @@ class Mobilpay_Payment_Request_Notify {
      * @return Mobilpay_Payment_Reuquest_Notify
      * @throws Exception On missing xml attributes
      */
-    public function loadFromXml(DOMElement $elem) {
+    public function loadFromXml(\DOMElement $elem) {
         $attr = $elem->attributes->getNamedItem('timestamp');
         if ($attr != null) {
             $this->timestamp = $attr->nodeValue;
         }
         $attr = $elem->attributes->getNamedItem('crc');
         if ($attr == null) {
-            throw new Exception('Mobilpay_Payment_Request_Notify::loadFromXml failed; mandatory crc attribute missing', self::ERROR_LOAD_FROM_XML_CRC_ATTR_MISSING);
+            throw new \Exception('Mobilpay_Payment_Request_Notify::loadFromXml failed; mandatory crc attribute missing', self::ERROR_LOAD_FROM_XML_CRC_ATTR_MISSING);
         }
         $this->_crc = $attr->nodeValue;
         $elems = $elem->getElementsByTagName('action');
         if ($elems->length != 1) {
-            throw new Exception('Mobilpay_Payment_Request_Notify::loadFromXml failed; mandatory action attribute missing', self::ERROR_LOAD_FROM_XML_ACTION_ELEM_MISSING);
+            throw new \Exception('Mobilpay_Payment_Request_Notify::loadFromXml failed; mandatory action attribute missing', self::ERROR_LOAD_FROM_XML_ACTION_ELEM_MISSING);
         }
         $this->action = $elems->item(0)->nodeValue;
         $elems = $elem->getElementsByTagName('customer');
@@ -183,7 +183,7 @@ class Mobilpay_Payment_Request_Notify {
             $doaElems = $elems->item(0)->getElementsByTagName('discount');
             $this->discounts = Array();
             foreach ($doaElems as $de) {
-                $doaEntry = new stdClass();
+                $doaEntry = new \stdClass();
                 $doaEntry->id = $de->attributes->getNamedItem('id')->nodeValue;
                 $doaEntry->amount = $de->attributes->getNamedItem('amount')->nodeValue;
                 $doaEntry->currency = $de->attributes->getNamedItem('currency')->nodeValue;
@@ -234,10 +234,10 @@ class Mobilpay_Payment_Request_Notify {
     /**
      *
      * Appends to computed xml element to  the xmlDoc and returns it
-     * @param DOMDocument $xmlDoc
-     * @return DOMElement
+     * @param \DOMDocument $xmlDoc
+     * @return \DOMElement
      */
-    public function createXmlElement(DOMDocument $xmlDoc) {
+    public function createXmlElement(\DOMDocument $xmlDoc) {
         $xmlNotifyElem = $xmlDoc->createElement('mobilpay');
         $attr = $xmlDoc->createAttribute('timestamp');
         $attr->nodeValue = date('YmdHis');

@@ -116,16 +116,16 @@ abstract class Mobilpay_Payment_Request_Abstract
 		srand((double) microtime() * 1000000);
         $this->_requestIdentifier = md5(uniqid(rand()));
         
-        $this->_objRequestParams = new stdClass();
+        $this->_objRequestParams = new \stdClass();
 	}
 	
 	abstract protected function _prepare();
-	abstract protected function _loadFromXml(DOMElement $elem);
+	abstract protected function _loadFromXml(\DOMElement $elem);
 	
 	static public function factory($data)
 	{
 		$objPmReq = null;
-		$xmlDoc = new DOMDocument();
+		$xmlDoc = new \DOMDocument();
 		if(@$xmlDoc->loadXML($data) === true)
 		{
 			//try to create payment request from xml
@@ -155,45 +155,45 @@ abstract class Mobilpay_Payment_Request_Abstract
 		}
 		if($privateKey === false)
         {
-        	throw new Exception('Error loading private key', self::ERROR_CONFIRM_LOAD_PRIVATE_KEY);
+        	throw new \Exception('Error loading private key', self::ERROR_CONFIRM_LOAD_PRIVATE_KEY);
         }
         
         $srcData = base64_decode($encData);
 		if($srcData === false)
 		{
 			@openssl_free_key($privateKey);
-			throw new Exception('Failed decoding data', self::ERROR_CONFIRM_FAILED_DECODING_DATA);
+			throw new \Exception('Failed decoding data', self::ERROR_CONFIRM_FAILED_DECODING_DATA);
 		}
         
 		$srcEnvKey = base64_decode($envKey);
 		if($srcEnvKey === false)
 		{
-			throw new Exception('Failed decoding envelope key', self::ERROR_CONFIRM_FAILED_DECODING_ENVELOPE_KEY);
+			throw new \Exception('Failed decoding envelope key', self::ERROR_CONFIRM_FAILED_DECODING_ENVELOPE_KEY);
 		}
 		
 		$data = null;
 		$result = @openssl_open($srcData, $data, $srcEnvKey, $privateKey);
 		if($result === false)
 		{
-			throw new Exception('Failed decrypting data', self::ERROR_CONFIRM_FAILED_DECRYPT_DATA);
+			throw new \Exception('Failed decrypting data', self::ERROR_CONFIRM_FAILED_DECRYPT_DATA);
 		}
 		
 		return Mobilpay_Payment_Request_Abstract::factory($data);
 	}
 	
-	static protected function _factoryFromXml(DOMDocument $xmlDoc)
+	static protected function _factoryFromXml(\DOMDocument $xmlDoc)
 	{
 		$elems = $xmlDoc->getElementsByTagName('order');
 		if($elems->length != 1)
 		{
-			throw new Exception('factoryFromXml order element not found', Mobilpay_Payment_Request_Abstract::ERROR_FACTORY_BY_XML_ORDER_ELEM_NOT_FOUND);
+			throw new \Exception('factoryFromXml order element not found', Mobilpay_Payment_Request_Abstract::ERROR_FACTORY_BY_XML_ORDER_ELEM_NOT_FOUND);
 		}
 		$orderElem = $elems->item(0);
 		
 		$attr = $orderElem->attributes->getNamedItem('type');
 		if($attr == null || strlen($attr->nodeValue) == 0)
 		{
-			throw new Exception('factoryFromXml invalid payment request type=' . $attr->nodeValue, Mobilpay_Payment_Request_Abstract::ERROR_FACTORY_BY_XML_ORDER_TYPE_ATTR_NOT_FOUND);
+			throw new \Exception('factoryFromXml invalid payment request type=' . $attr->nodeValue, Mobilpay_Payment_Request_Abstract::ERROR_FACTORY_BY_XML_ORDER_TYPE_ATTR_NOT_FOUND);
 		}
 		switch ($attr->nodeValue)
 		{
@@ -204,7 +204,7 @@ abstract class Mobilpay_Payment_Request_Abstract
 			$objPmReq =  new Mobilpay_Payment_Request_Sms();
 			break;
 		default:
-			throw new Exception('factoryFromXml invalid payment request type=' . $attr->nodeValue, Mobilpay_Payment_Request_Abstract::ERROR_FACTORY_BY_XML_INVALID_TYPE);
+			throw new \Exception('factoryFromXml invalid payment request type=' . $attr->nodeValue, Mobilpay_Payment_Request_Abstract::ERROR_FACTORY_BY_XML_INVALID_TYPE);
 			break;
 		}
 		$objPmReq->_loadFromXml($orderElem);
@@ -221,7 +221,7 @@ abstract class Mobilpay_Payment_Request_Abstract
 	
 	protected function _setRequestInfo($reqVersion, $reqData)
 	{
-		$this->_objRequestInfo = new stdClass();
+		$this->_objRequestInfo = new \stdClass();
 		$this->_objRequestInfo->reqVersion 	= $reqVersion;
 		$this->_objRequestInfo->reqData 	= $reqData;
 	}
@@ -236,14 +236,14 @@ abstract class Mobilpay_Payment_Request_Abstract
 		$xmlAttr = $elem->attributes->getNamedItem('id');
 		if($xmlAttr == null || strlen((string)$xmlAttr->nodeValue) == 0)
 		{
-			throw new Exception('Mobilpay_Payment_Request_Sms::_parseFromXml failed: empty order id', self::ERROR_LOAD_FROM_XML_ORDER_ID_ATTR_MISSING);
+			throw new \Exception('Mobilpay_Payment_Request_Sms::_parseFromXml failed: empty order id', self::ERROR_LOAD_FROM_XML_ORDER_ID_ATTR_MISSING);
 		}
 		$this->orderId = $xmlAttr->nodeValue;
 		
 		$elems = $elem->getElementsByTagName('signature');
 		if($elems->length != 1)
 		{
-			throw new Exception('Mobilpay_Payment_Request_Sms::loadFromXml failed: signature is missing', self::ERROR_LOAD_FROM_XML_SIGNATURE_ELEM_MISSING);
+			throw new \Exception('Mobilpay_Payment_Request_Sms::loadFromXml failed: signature is missing', self::ERROR_LOAD_FROM_XML_SIGNATURE_ELEM_MISSING);
 		}
 		$xmlElem = $elems->item(0);
 		$this->signature = $xmlElem->nodeValue;
@@ -313,7 +313,7 @@ abstract class Mobilpay_Payment_Request_Abstract
 			{
 				$errorMessage .= $errorString . "\n";
 			}
-			throw new Exception($errorMessage, self::ERROR_LOAD_X509_CERTIFICATE);
+			throw new \Exception($errorMessage, self::ERROR_LOAD_X509_CERTIFICATE);
 		}
 		$srcData = $this->_xmlDoc->saveXML();
 		$publicKeys	= array($publicKey);
@@ -329,7 +329,7 @@ abstract class Mobilpay_Payment_Request_Abstract
 			{
 				$errorMessage .= $errorString . "\n";
 			}
-			throw new Exception($errorMessage, self::ERROR_ENCRYPT_DATA);
+			throw new \Exception($errorMessage, self::ERROR_ENCRYPT_DATA);
 		}
 		
 		$this->outEncData 	= base64_encode($encData);
@@ -372,7 +372,7 @@ abstract class Mobilpay_Payment_Request_Abstract
         return $this->_objRequestParams->$name;
     }
     public function __wakeup(){
-        $this->_objRequestParams= new stdClass();
+        $this->_objRequestParams= new \stdClass();
     }
     public function __sleep()
     {

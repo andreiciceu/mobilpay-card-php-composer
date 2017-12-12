@@ -25,7 +25,7 @@ class Mobilpay_Payment_Request_Sms extends Mobilpay_Payment_Request_Abstract
 		$this->type = self::PAYMENT_TYPE_SMS;
 	}
 	
-	protected function _loadFromXml(DOMElement $elem)
+	protected function _loadFromXml(\DOMElement $elem)
 	{
 		parent::_parseFromXml($elem);
 		
@@ -33,7 +33,7 @@ class Mobilpay_Payment_Request_Sms extends Mobilpay_Payment_Request_Abstract
 		$elems = $elem->getElementsByTagName('service');
 		if($elems->length != 1)
 		{
-			throw new Exception('Mobilpay_Payment_Request_Sms::loadFromXml failed: service is missing', self::ERROR_LOAD_FROM_XML_SERVICE_ELEM_MISSING);
+			throw new \Exception('Mobilpay_Payment_Request_Sms::loadFromXml failed: service is missing', self::ERROR_LOAD_FROM_XML_SERVICE_ELEM_MISSING);
 		}
 		$xmlElem = $elems->item(0);
 		$this->service = $xmlElem->nodeValue;
@@ -60,17 +60,17 @@ class Mobilpay_Payment_Request_Sms extends Mobilpay_Payment_Request_Abstract
         
         if(!isset($reqParams['signature']))
         {
-        	throw new Exception('Mobilpay_Payment_Request_Sms::loadFromQueryString failed: signature is missing', self::ERROR_LOAD_FROM_XML_SIGNATURE_ELEM_MISSING);
+        	throw new \Exception('Mobilpay_Payment_Request_Sms::loadFromQueryString failed: signature is missing', self::ERROR_LOAD_FROM_XML_SIGNATURE_ELEM_MISSING);
         }
         $this->signature = $reqParams['signature'];
         if(!isset($reqParams['service']))
         {
-        	throw new Exception('Mobilpay_Payment_Request_Sms::loadFromQueryString failed: service is missing', self::ERROR_LOAD_FROM_XML_SERVICE_ELEM_MISSING);
+        	throw new \Exception('Mobilpay_Payment_Request_Sms::loadFromQueryString failed: service is missing', self::ERROR_LOAD_FROM_XML_SERVICE_ELEM_MISSING);
         }
         $this->service = $reqParams['service'];
         if(!isset($reqParams['tran_id']))
         {
-        	throw new Exception('Mobilpay_Payment_Request_Sms::loadFromQueryString failed: empty order id', self::ERROR_LOAD_FROM_XML_ORDER_ID_ATTR_MISSING);
+        	throw new \Exception('Mobilpay_Payment_Request_Sms::loadFromQueryString failed: empty order id', self::ERROR_LOAD_FROM_XML_ORDER_ID_ATTR_MISSING);
         }
         $this->orderId = $reqParams['tran_id'];
         if(isset($reqParams['timestamp']))
@@ -105,10 +105,10 @@ class Mobilpay_Payment_Request_Sms extends Mobilpay_Payment_Request_Abstract
 	{
 		if(is_null($this->signature) || is_null($this->service) || is_null($this->orderId))
 		{
-			throw new Exception('One or more mandatory properties are invalid!', self::ERROR_PREPARE_MANDATORY_PROPERTIES_UNSET);
+			throw new \Exception('One or more mandatory properties are invalid!', self::ERROR_PREPARE_MANDATORY_PROPERTIES_UNSET);
 		}
 		
-		$this->_xmlDoc 		= new DOMDocument('1.0', 'utf-8');
+		$this->_xmlDoc 		= new \DOMDocument('1.0', 'utf-8');
 		$rootElem 			= $this->_xmlDoc->createElement('order');
 
 		//set payment type attribute
