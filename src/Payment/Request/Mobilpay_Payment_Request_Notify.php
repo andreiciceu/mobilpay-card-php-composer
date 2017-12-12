@@ -1,5 +1,7 @@
 <?php
 namespace Mobilpay\Payment\Request;
+use Mobilpay\Payment\Mobilpay_Payment_Address;
+
 /**
  * mobilPay
  *
