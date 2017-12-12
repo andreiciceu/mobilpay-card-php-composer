@@ -2,7 +2,7 @@ PHP_CARD
 ========
 Composer project for MobilPay.ro card payment
 
-#Installation
+# Installation
 Update your project's composer.json file like this
 ```
 ...
@@ -20,7 +20,7 @@ Update your project's composer.json file like this
 ```
 Then run `composer update`
 
-#Usage
+# Usage
 ```
 <?php
 
