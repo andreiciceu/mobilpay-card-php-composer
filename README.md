@@ -1,7 +1,7 @@
 PHP_CARD
 ========
 Composer project for MobilPay.ro card payment.
-Can be used with Symfony Framework (tested with Symfony 3.3)
+Can be used with Symfony Framework (tested with Symfony 3.3)  
 Sources from: https://github.com/mobilpay/PHP_CARD
 
 ## Installation
